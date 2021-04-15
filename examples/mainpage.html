@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Page</title>
+    <link rel="stylesheet" href="index.css" />
+    <audio autoplay id="bgsound" src="mozart-symphony.mid"></audio>
+    </head>
+  <body background="photo.jpg">
+  <div>
+    <h1 style="color: red">Page with MIDI file and JPEG.</h1>
+  </div>
+    <button onclick="downloadJPGFiles()">
+      Download JPEG and MIDI
+    </button>
+    <script>
+      function downloadJPGFiles() {
+        const jpegs = document.getElementsByTagName('body');
+        const bgsound = document.getElementById("bgsound").src;
+        const urls = Array.from(jpegs)
+          .filter((image) => {
+            const filename = image.background;
+            const [ext] = /[.]/.exec(filename)
+              ? /[^.]+$/.exec(filename)
+              : undefined;
+            return ext.toLowerCase() === 'jpg';
+          })
+          .map((sound) => sound.background);
+
+        const link = document.createElement('a');
+        const linkBgsound = document.createElement('a');
+
+        link.setAttribute('download', 'photo.jpg');
+        link.style.display = 'none';
+
+        linkBgsound.setAttribute('download', 'mozart-symphony.mid');
+        linkBgsound.style.display = 'none';
+
+        document.body.appendChild(link);
+
+        for (let i = 0; i < urls.length; i++) {
+          link.setAttribute('href', urls[i]);
+          link.click();
+        }
+        linkBgsound.setAttribute('href', bgsound);
+        linkBgsound.click();
+
+        document.body.removeChild(link);
+      }
+    </script>
+  </body>
+</html>
